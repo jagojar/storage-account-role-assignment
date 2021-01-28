@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "bAE/ixLg1BGe1gK+1wr8uvXfxI3W523Rrcd4dr5e6WPkg+FwDjjzfIQqBMrPuyXQAat3L3E4fvQyDJhRTf+hEw==",
+  "success": true,
+  "projectFilePath": "C:\\MS\\Clients\\Pilot-Catastrophe\\Pilot-Catastrophe\\StorageAccount-PoC\\StorageAccountApp\\StorageAccountApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\juosorio\\.nuget\\packages\\system.text.json\\5.0.1\\system.text.json.5.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
