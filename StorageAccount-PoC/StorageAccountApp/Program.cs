@@ -11,6 +11,7 @@ namespace StorageAccountApp
             Console.WriteLine("");
             Console.WriteLine("1. List of resource groups");
             Console.WriteLine("2. Role assignments");
+            Console.Write("Enter option: ");
 
             var a = Console.ReadLine();
 
@@ -41,7 +42,45 @@ namespace StorageAccountApp
         static void CallRoleAssignmentStorageAccountContainer(ConfigBody config, string token)
         {
             var raManager = new RoleAssignmentManager(config);
-            var result = raManager.SetAssignmentAsync(token).Result;            
+
+            Console.Write("PrincipalId (leave empty for '1f1f96f9 -cd7d-468e-8cfb-d241fbff99a2': ");
+            string principalId = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(principalId))
+                principalId = "1f1f96f9-cd7d-468e-8cfb-d241fbff99a2";
+
+            Console.Write("Resource Group Name (leave empty for 'test-rg': ");
+            string rgName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(rgName))
+                rgName = "test-rg";
+
+            Console.Write("Storage Account Name (leave empty for 'sa36574457': ");
+            string saName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(saName))
+                saName = "sa36574457";
+
+            Console.Write("Container Name (leave empty for 'container1': ");
+            string containerName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(containerName))
+                containerName = "container1";
+
+            var raParams = new RoleAssignmentParams()
+            {
+                PrincipalId = principalId,
+                ResourceGroupName = rgName,
+                StorageAccountName = saName,
+                ContainerName = containerName
+            };
+
+            var result = raManager.SetAssignmentAsync(token, raParams).Result;
+
+            Console.WriteLine();
+            Console.WriteLine(result.Message);
+            Console.WriteLine();
+            Console.WriteLine(result.ResponseBody);
         }
 
         static void CallResourgeGroupsList(ConfigBody config, string token)

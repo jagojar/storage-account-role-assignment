@@ -8,6 +8,8 @@ namespace StorageAccountApp
         public string type { get; set; }
         public string name {get; set; }
         public RoleAssignmentDetail properties { get; set; }
+        public string Message { get; set; }
+        public string ResponseBody { get; set; }
     }
 
     public class RoleAssignmentDetail

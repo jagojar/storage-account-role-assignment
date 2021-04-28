@@ -21,21 +21,21 @@ namespace StorageAccountApp
             _config = config;
         }
 
-        public async Task<RoleAssignmentResponse> SetAssignmentAsync(string authToken)
+        public async Task<RoleAssignmentResponse> SetAssignmentAsync(string authToken, RoleAssignmentParams raParams)
         {
             //Visual Studio Enterprise
             string subscriptionId = _config.subscriptionId;
-            string roleAssignmentId = Guid.NewGuid().ToString();
-            //Built-in-Role Storage Blob Data Reader            
-            
+            string roleAssignmentId = Guid.NewGuid().ToString();                        
+
             //Mary Smith
-            string principalId = "1f1f96f9-cd7d-468e-8cfb-d241fbff99a2";
-            string rgName = "test-rg";
-            string saName = "sa36574457";
-            string containerName = "container1";
+            string principalId = raParams.PrincipalId;
+            string rgName = raParams.ResourceGroupName;
+            string saName = raParams.StorageAccountName;
+            string containerName = raParams.ContainerName;
                              
             string scope = $"subscriptions/{subscriptionId}/resourceGroups/{rgName}/providers/Microsoft.Storage/storageAccounts/{saName}/blobServices/default/containers/{containerName}";
-            
+
+            //Built-in-Role Storage Blob Data Reader
             //https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-reader
             string roleId = "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1";
             string roleDefinitionId = $"{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleId}";
@@ -63,7 +63,16 @@ namespace StorageAccountApp
             var response = await client.PutAsync(assignmentUrl, content);
             var responseBody = response.Content.ReadAsStringAsync().Result;
 
-            var raResponse = JsonSerializer.Deserialize<RoleAssignmentResponse>(responseBody);
+            var raResponse = new RoleAssignmentResponse();
+            raResponse.Message = "Error: See response body";            
+
+            if (response.IsSuccessStatusCode)
+            {                
+                raResponse = JsonSerializer.Deserialize<RoleAssignmentResponse>(responseBody);
+                raResponse.Message = "Successful Role assignment!!";
+            }
+
+            raResponse.ResponseBody = responseBody;
 
             return raResponse;
         }
